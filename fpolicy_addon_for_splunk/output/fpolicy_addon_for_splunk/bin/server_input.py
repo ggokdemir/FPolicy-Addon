@@ -125,7 +125,14 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
                 #FIXME:
                 # insert input values into the url and/or header (helper class handles credential store)
-                #index=helper.get_arg('account')['index']
+                index=helper.get_arg('account')['index']
+
+                helper.log_info("index : "+index)
+
+                index=helper.get_arg('account')['index']
+                account=helper.get_arg('account')['index']
+
+                helper.log_info("index : "+index+"account : "+account)
 
                 import xml.etree.ElementTree as ET
                 import json
@@ -155,8 +162,8 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
                     try:
                         sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
-                        event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=json_data)
-                        helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+json_data)
+                        event = helper.new_event(source="server_input", index=index, sourcetype=sourcetype , data=json_data)
+                        helper.log_info("\n   (.) JSON Event Inserted (.) \n source=\"server_input\", index="+index+", sourcetype="+sourcetype+" , data="+json_data)
                         ew.write_event(event)
                     except:
                         helper.log_info("\n   (!) Error inserting JSON event. (!)  ")
@@ -164,8 +171,8 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 except:
                     try:
                         sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
-                        event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
-                        helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
+                        event = helper.new_event(source="server_input", index=index, sourcetype=sourcetype , data=data)
+                        helper.log_info("\n   (.) XML Event Inserted (.) \n source=\"server_input\", index="+index+", sourcetype="+sourcetype+" , data="+data)
                         ew.write_event(event)
                     except:
                         helper.log_info("\n   (!) Error inserting XML event. (!)  ")

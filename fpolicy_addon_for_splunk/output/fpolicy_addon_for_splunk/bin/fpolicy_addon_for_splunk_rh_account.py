@@ -15,13 +15,7 @@ util.remove_http_proxy_env_vars()
 
 
 fields = [
-    field.RestField(
-        'api_key',
-        required=True,
-        encrypted=True,
-        default=None,
-        validator=None
-    )
+
 ]
 model = RestModel(fields, name=None)
 

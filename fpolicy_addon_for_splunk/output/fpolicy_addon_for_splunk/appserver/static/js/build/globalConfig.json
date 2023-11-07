@@ -37,14 +37,6 @@
                             "field": "name",
                             "help": "A unique name for the account.",
                             "required": true
-                        },
-                        {
-                            "type": "text",
-                            "label": "API key",
-                            "field": "api_key",
-                            "help": "API key",
-                            "required": true,
-                            "encrypted": true
                         }
                     ],
                     "title": "Accounts"
@@ -183,6 +175,10 @@
                         "field": "index"
                     },
                     {
+                        "label": "Account to use",
+                        "field": "account"
+                    },
+                    {
                         "label": "Status",
                         "field": "disabled",
                         "mapping": {
@@ -210,7 +206,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }
