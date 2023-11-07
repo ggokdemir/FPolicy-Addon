@@ -61,7 +61,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         helper.log_info("Server starts.")
         import socket
         import re
-        host = '192.168.11.26'
+        host = 'localhost'
         port = 1337
         # socket object
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,9 +77,9 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             # receive text data
             raw_data = client_sock.recv(1024)
             helper.log_info(f"\n **Received raw data: {raw_data}")
-            #cut the nondecodeable part, then decode
+            #cut the non decode part, then decode
             hex_data = raw_data[6:]
-            unkhex_data = raw_data[:6]
+            unk_hex_data = raw_data[:6]
             helper.log_info(f"\n **Received hex data: {hex_data}")
             data = hex_data.decode()
             helper.log_info(f"\n **Received data decoded: {data}")
@@ -103,7 +103,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 helper.log_info("\n --> Header to send : {}".format(header_resp))
                 # SessionId and VsUUID should change only
                 handshake_resp = ("<?xml version=\"1.0\"?><HandshakeResp><VsUUID>" + ("%s" % (result_VsUUID)) + "</VsUUID><PolicyName>policy-test-flo</PolicyName><SessionId>"+("%s" % (result_SessionId))+"</SessionId><ProtVersion>1.2</ProtVersion></HandshakeResp>")
-                helper.log_info(" --> Handshake response length : ")
+                helper.log_info(" --> Handshake response length below: _ ")
                 helper.log_info(len(handshake_resp.encode()))
                 try:
                     # send a response
@@ -111,7 +111,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     # client_sock.send(header_resp.encode()+bytes.fromhex('0a 0a')+handshake_resp.encode())
                     client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
                     complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
-                    helper.log_info("!!! Complete segment sent : ")
+                    helper.log_info("!!! Complete segment that sent below : _ ")
                     helper.log_info((complete))
                 except IOError as err:
                     helper.log_info('\n IO Err.' + str(err))
