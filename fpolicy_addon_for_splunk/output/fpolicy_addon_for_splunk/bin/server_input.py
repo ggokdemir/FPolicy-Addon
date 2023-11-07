@@ -129,7 +129,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 try:
                     sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
                     event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
-                    helper.log_info("\n   (.) source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
+                    helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
                     ew.write_event(event)
                 except:
                     helper.log_info("\n   (!) Error inserting event. (!)  ")
