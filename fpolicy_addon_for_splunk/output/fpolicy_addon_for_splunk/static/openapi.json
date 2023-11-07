@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "fpolicy_addon_for_splunk",
-        "version": "0.0.9",
+        "version": "0.1.0",
         "description": "FPolicy Add-on for Splunk",
         "contact": {
             "name": ""
@@ -81,7 +81,7 @@
                     "name": {
                         "type": "string"
                     },
-                    "interval": {
+                    "index": {
                         "type": "string"
                     },
                     "account": {
@@ -99,7 +99,7 @@
             "server_input_without_name": {
                 "type": "object",
                 "properties": {
-                    "interval": {
+                    "index": {
                         "type": "string"
                     },
                     "account": {
@@ -120,7 +120,7 @@
                     "name": {
                         "type": "string"
                     },
-                    "interval": {
+                    "index": {
                         "type": "string"
                     },
                     "account": {

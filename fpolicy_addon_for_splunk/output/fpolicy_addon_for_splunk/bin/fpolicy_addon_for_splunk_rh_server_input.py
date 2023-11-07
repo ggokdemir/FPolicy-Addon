@@ -16,12 +16,13 @@ util.remove_http_proxy_env_vars()
 
 fields = [
     field.RestField(
-        'interval',
+        'index',
         required=True,
         encrypted=False,
-        default='300',
-        validator=validator.Pattern(
-            regex=r"""^\-[1-9]\d*$|^\d*$""", 
+        default='default',
+        validator=validator.String(
+            max_len=80, 
+            min_len=1, 
         )
     ), 
     field.RestField(

@@ -117,19 +117,24 @@
                             "required": true
                         },
                         {
-                            "type": "text",
-                            "label": "Interval",
+                            "field": "index",
+                            "label": "Index",
+                            "type": "singleSelect",
+                            "defaultValue": "default",
+                            "options": {
+                                "endpointUrl": "data/indexes",
+                                "createSearchChoice": true,
+                                "denyList": "^_.*$"
+                            },
+                            "required": true,
                             "validators": [
                                 {
-                                    "type": "regex",
-                                    "errorMsg": "Interval must be an integer.",
-                                    "pattern": "^\\-[1-9]\\d*$|^\\d*$"
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "errorMsg": "Length of index name should be between 1 and 80."
                                 }
-                            ],
-                            "defaultValue": "300",
-                            "field": "interval",
-                            "help": "Time interval of the data input, in seconds.",
-                            "required": true
+                            ]
                         },
                         {
                             "type": "singleSelect",
@@ -160,10 +165,6 @@
                         "field": "name"
                     },
                     {
-                        "label": "Interval",
-                        "field": "interval"
-                    },
-                    {
                         "label": "Index",
                         "field": "index"
                     },
@@ -176,10 +177,6 @@
                     {
                         "label": "Name",
                         "field": "name"
-                    },
-                    {
-                        "label": "Interval",
-                        "field": "interval"
                     },
                     {
                         "label": "Index",
@@ -213,7 +210,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.0.9",
+        "version": "0.1.0",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }

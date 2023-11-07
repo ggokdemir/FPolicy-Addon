@@ -1,3 +1,3 @@
 [server_input://<name>]
-interval = 
+index = 
 account = 
