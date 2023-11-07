@@ -59,6 +59,69 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
     def collect_events(helper, ew):
         #Start Server to listen the events.
         helper.log_info("Server starts.")
+        import socket
+        import re
+        host = '192.168.11.26'
+        port = 1337
+        # socket object
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # bind the socket
+        sock.bind((host, port))
+        sock.listen(1)
+        # listen for one connection at a time
+        helper.log_info(f"\n ... Listening on {host}:{port}")
+        while True:
+            # wait for a connection
+            client_sock, client_addr = sock.accept()
+            helper.log_info(f"\n !! Connection from {client_addr}")
+            # receive text data
+            raw_data = client_sock.recv(1024)
+            helper.log_info(f"\n **Received raw data: {raw_data}")
+            #cut the nondecodeable part, then decode
+            hex_data = raw_data[6:]
+            unkhex_data = raw_data[:6]
+            helper.log_info(f"\n **Received hex data: {hex_data}")
+            data = hex_data.decode()
+            helper.log_info(f"\n **Received data decoded: {data}")
+            # here edit find the <SessionId>
+            tag_start = "<SessionId>"
+            tag_end = "</SessionId>"
+            pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
+            match_SessionId = re.search(pattern, data)
+            # here edit find the <VsUUID>
+            tag_start = "<VsUUID>"
+            tag_end = "</VsUUID>"
+            pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
+            match_VsUUID = re.search(pattern, data)
+            if (match_VsUUID and match_SessionId):
+                result_SessionId = match_SessionId.group(1)
+                helper.log_info("\n >>> SessionId : {}".format(result_SessionId))
+                result_VsUUID = match_VsUUID.group(1)
+                helper.log_info("\n >>> VsUUID : {}".format(result_VsUUID))
+                header_resp = ("<?xml version=\"1.0\"?><Header><NotfType>NEGO_RESP</NotfType><ContentLen>234</ContentLen><DataFormat>XML</DataFormat></Header>")
+                # send a header
+                helper.log_info("\n --> Header to send : {}".format(header_resp))
+                # SessionId and VsUUID should change only
+                handshake_resp = ("<?xml version=\"1.0\"?><HandshakeResp><VsUUID>" + ("%s" % (result_VsUUID)) + "</VsUUID><PolicyName>policy-test-flo</PolicyName><SessionId>"+("%s" % (result_SessionId))+"</SessionId><ProtVersion>1.2</ProtVersion></HandshakeResp>")
+                helper.log_info(" --> Handshake response length : ")
+                helper.log_info(len(handshake_resp.encode()))
+                try:
+                    # send a response
+                    helper.log_info("\n --> Response to send : {}".format(handshake_resp))
+                    # client_sock.send(header_resp.encode()+bytes.fromhex('0a 0a')+handshake_resp.encode())
+                    client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
+                    complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
+                    helper.log_info("!!! Complete segment sent : ")
+                    helper.log_info((complete))
+                except IOError as err:
+                    helper.log_info('\n IO Err.' + str(err))
+            else:
+                helper.log_info("\n SessionId and VsUUID not found.^^ Check the data above ^^")
+                try:
+                    # close the socket
+                    client_sock.close()
+                except IOError as err:
+                    helper.log_info('\n IO Err.' + str(err))
 
 
     def get_account_fields(self):
