@@ -111,12 +111,17 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     # client_sock.send(header_resp.encode()+bytes.fromhex('0a 0a')+handshake_resp.encode())
                     client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
                     complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
-                    helper.log_info("!!! Complete segment that sent below : _ ")
+                    helper.log_info("!!! Complete the segment sent below : _ ")
                     helper.log_info((complete))
                 except IOError as err:
                     helper.log_info('\n IO Err.' + str(err))
             else:
                 helper.log_info("\n SessionId and VsUUID not found.^^ Check the data above ^^")
+                #TODO: An event came, write that to an Index.
+
+                data = hex_data.decode()
+                helper.log_info(f"\n ***> Data to write: {data}")
+
                 try:
                     # close the socket
                     client_sock.close()
