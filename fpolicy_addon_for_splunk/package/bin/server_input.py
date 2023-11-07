@@ -116,7 +116,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 except IOError as err:
                     helper.log_info('\n IO Err.' + str(err))
             else:
-                helper.log_info("\n SessionId and VsUUID not found.^^ Check the data above ^^")
+                #helper.log_info("\n SessionId and VsUUID not found.^^ Check the data above ^^")
                 #TODO: An event came, write that to an Index.
 
                 data = hex_data.decode()
@@ -125,14 +125,14 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
                 #FIXME:
                 # insert input values into the url and/or header (helper class handles credential store)
-                helper.log_info("")
                 #index=helper.get_arg('account')['index']
                 try:
                     sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
                     event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
+                    helper.log_info("\n   (.) source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
                     ew.write_event(event)
                 except:
-                    helper.log_info("   ##Error inserting event.##  ")
+                    helper.log_info("\n   (!) Error inserting event. (!)  ")
 
                 #FIXME: 
 
