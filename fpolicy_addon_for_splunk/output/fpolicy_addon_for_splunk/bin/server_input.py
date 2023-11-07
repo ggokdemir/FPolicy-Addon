@@ -58,7 +58,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
     def collect_events(helper, ew):
         #Start Server to listen the events.
-        helper.log_info("Server starts.")
+
         import socket
         import re
         host = 'localhost'
@@ -69,20 +69,20 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         sock.bind((host, port))
         sock.listen(1)
         # listen for one connection at a time
-        helper.log_info(f"\n ... Listening on {host}:{port}")
+        helper.log_info(f"\n ... Listening on {host}:{port} ...")
         while True:
             # wait for a connection
             client_sock, client_addr = sock.accept()
-            helper.log_info(f"\n !! Connection from {client_addr}")
+            helper.log_info(f"\n !! Connection from {client_addr} !!")
             # receive text data
             raw_data = client_sock.recv(1024)
-            helper.log_info(f"\n **Received raw data: {raw_data}")
+            helper.log_info(f"\n **Received raw data: {raw_data} \n ")
             #cut the non decode part, then decode
             hex_data = raw_data[6:]
             unk_hex_data = raw_data[:6]
-            helper.log_info(f"\n **Received hex data: {hex_data}")
+            #helper.log_info(f"\n **Received hex data: {hex_data}")
             data = hex_data.decode()
-            helper.log_info(f"\n **Received data decoded: {data}")
+            helper.log_info(f"\n **Received data decoded: {data} \n ")
             # here edit find the <SessionId>
             tag_start = "<SessionId>"
             tag_end = "</SessionId>"
@@ -120,7 +120,22 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 #TODO: An event came, write that to an Index.
 
                 data = hex_data.decode()
-                helper.log_info(f"\n ***> Data to write: {data}")
+                helper.log_info(f"\n ===> Data to write: \n {data} \n")
+
+
+                #FIXME:
+                # insert input values into the url and/or header (helper class handles credential store)
+                helper.log_info("")
+                #index=helper.get_arg('account')['index']
+                try:
+                    sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
+                    event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
+                    ew.write_event(event)
+                except:
+                    helper.log_info("   ##Error inserting event.##  ")
+
+                #FIXME: 
+
 
                 try:
                     # close the socket
