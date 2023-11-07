@@ -78,7 +78,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             raw_data = client_sock.recv(1024)
             helper.log_info(f"\n **Received raw data: {raw_data} \n ")
             #cut the non decode part, then decode
-            hex_data = raw_data[6:]
+            hex_data = raw_data[6:-1]
             unk_hex_data = raw_data[:6]
             #helper.log_info(f"\n **Received hex data: {hex_data}")
             data = hex_data.decode()
@@ -120,19 +120,55 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 #TODO: An event came, write that to an Index.
 
                 data = hex_data.decode()
-                helper.log_info(f"\n ===> Data to write: \n {data} \n")
+                helper.log_info(f"\n ===> Convert to JSON: \n {data} \n")
 
 
                 #FIXME:
                 # insert input values into the url and/or header (helper class handles credential store)
                 #index=helper.get_arg('account')['index']
+
+                import xml.etree.ElementTree as ET
+                import json
+
                 try:
-                    sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
-                    event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
-                    helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
-                    ew.write_event(event)
+                    root = ET.fromstring(data)
+                    def xml_to_dict(item):
+                        if len(item) == 0:
+                            return item.text
+                        result = {}
+                        for i in item:
+                            i_data = xml_to_dict(i)
+                            if i.tag in result:
+                                if type(result[i.tag]) is list:
+                                    result[i.tag].append(i_data)
+                                else:
+                                    result[i.tag] = [result[i.tag], i_data]
+                            else:
+                                result[i.tag] = i_data
+                        return result
+
+                    xml_dict = {root.tag: xml_to_dict(root)}
+
+                    # Convert the Python dictionary to JSON
+                    json_data = json.dumps(xml_dict, indent=4)
+                    helper.log_info(f"\n ===> Converted to JSON: \n {json_data} \n")
+
+                    try:
+                        sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
+                        event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=json_data)
+                        helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+json_data)
+                        ew.write_event(event)
+                    except:
+                        helper.log_info("\n   (!) Error inserting JSON event. (!)  ")
+
                 except:
-                    helper.log_info("\n   (!) Error inserting event. (!)  ")
+                    try:
+                        sourcetype=  "server_input"  + "://" + helper.get_input_stanza_names()
+                        event = helper.new_event(source="server_input", index="server_index", sourcetype=sourcetype , data=data)
+                        helper.log_info("\n   (.) event inserted. (.) \n source=\"server_input\", index=\"server_index\", sourcetype="+sourcetype+" , data="+data)
+                        ew.write_event(event)
+                    except:
+                        helper.log_info("\n   (!) Error inserting XML event. (!)  ")
 
                 #FIXME: 
 
