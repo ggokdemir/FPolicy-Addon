@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "fpolicy_addon_for_splunk",
-        "version": "0.1.6",
+        "version": "0.1.7",
         "description": "FPolicy Add-on for Splunk",
         "contact": {
             "name": ""
@@ -78,6 +78,12 @@
                     "account": {
                         "type": "string"
                     },
+                    "FPolicy_IP": {
+                        "type": "string"
+                    },
+                    "FPolicy_Port": {
+                        "type": "string"
+                    },
                     "disabled": {
                         "type": "string",
                         "enum": [
@@ -94,6 +100,12 @@
                         "type": "string"
                     },
                     "account": {
+                        "type": "string"
+                    },
+                    "FPolicy_IP": {
+                        "type": "string"
+                    },
+                    "FPolicy_Port": {
                         "type": "string"
                     },
                     "disabled": {
@@ -115,6 +127,12 @@
                         "type": "string"
                     },
                     "account": {
+                        "type": "string"
+                    },
+                    "FPolicy_IP": {
+                        "type": "string"
+                    },
+                    "FPolicy_Port": {
                         "type": "string"
                     }
                 }

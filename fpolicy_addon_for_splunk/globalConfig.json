@@ -137,6 +137,44 @@
                             "help": "Account to use for this input.",
                             "field": "account",
                             "required": true
+                        },
+                        {
+                            "type": "text",
+                            "label": "FPolicy_IP",
+                            "field": "FPolicy_IP",
+                            "help": "IP for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "defaultValue": "localhost",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 9,
+                                    "maxLength": 13,
+                                    "errorMsg": "IP only."
+                                }
+                            ],
+                            "options": {
+                                "placeholder": "ex: 192.168.10.10"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "label": "FPolicy_Port",
+                            "field": "FPolicy_Port",
+                            "help": "Port for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "defaultValue": "1337",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Port number only.",
+                                    "minLength": 2,
+                                    "maxLength": 5
+                                }
+                            ],
+                            "options": {
+                                "placeholder": "ex: 12345"
+                            }
                         }
                     ],
                     "title": "server_input"
@@ -206,7 +244,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.1.6",
+        "version": "0.1.7",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }

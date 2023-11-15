@@ -32,6 +32,26 @@ fields = [
         default=None,
         validator=None
     ), 
+    field.RestField(
+        'FPolicy_IP',
+        required=True,
+        encrypted=False,
+        default='localhost',
+        validator=validator.String(
+            max_len=13, 
+            min_len=9, 
+        )
+    ), 
+    field.RestField(
+        'FPolicy_Port',
+        required=True,
+        encrypted=False,
+        default='1337',
+        validator=validator.String(
+            max_len=5, 
+            min_len=2, 
+        )
+    ), 
 
     field.RestField(
         'disabled',
