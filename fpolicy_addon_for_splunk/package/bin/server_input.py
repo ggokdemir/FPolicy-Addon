@@ -61,8 +61,8 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
         import socket
         import re
-        host = 'localhost'
-        port = 1337
+        host = helper.get_arg("Server_IP")
+        port = helper.get_arg("Server_Port")
         # socket object
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # bind the socket

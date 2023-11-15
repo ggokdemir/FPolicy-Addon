@@ -113,6 +113,7 @@
                             "label": "Index",
                             "type": "singleSelect",
                             "defaultValue": "default",
+                            "help": "An index to save File Notifications as JSON, if not as XML.",
                             "options": {
                                 "endpointUrl": "data/indexes",
                                 "createSearchChoice": true,
@@ -142,7 +143,7 @@
                             "type": "text",
                             "label": "External Server IP",
                             "field": "Server_IP",
-                            "help": "IP for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
                             "defaultValue": "localhost",
                             "required": true,
                             "validators": [
@@ -161,7 +162,7 @@
                             "type": "text",
                             "label": "External Server Port",
                             "field": "Server_Port",
-                            "help": "Port for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "help": "Port number for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
                             "defaultValue": "1337",
                             "required": true,
                             "validators": [
@@ -252,7 +253,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.1.9",
+        "version": "0.2.0",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }
