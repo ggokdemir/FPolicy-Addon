@@ -33,17 +33,17 @@ fields = [
         validator=None
     ), 
     field.RestField(
-        'FPolicy_IP',
+        'Server_IP',
         required=True,
         encrypted=False,
         default='localhost',
         validator=validator.String(
-            max_len=13, 
+            max_len=15, 
             min_len=9, 
         )
     ), 
     field.RestField(
-        'FPolicy_Port',
+        'Server_Port',
         required=True,
         encrypted=False,
         default='1337',
