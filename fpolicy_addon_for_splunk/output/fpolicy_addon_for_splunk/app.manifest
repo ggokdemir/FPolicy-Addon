@@ -4,9 +4,9 @@
     "info": {
         "author": [
             {
-                "company": null,
-                "email": null,
-                "name": ""
+                "company": "Splunk FDSE",
+                "email": "ggokdemir@splunk.com",
+                "name": "Gurkan Gokdemir"
             }
         ],
         "classification": {
@@ -21,7 +21,7 @@
         "id": {
             "group": null,
             "name": "fpolicy_addon_for_splunk",
-            "version": "0.2.0"
+            "version": "0.2.1"
         },
         "license": {
             "name": null,
