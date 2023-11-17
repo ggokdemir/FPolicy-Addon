@@ -58,33 +58,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
     def collect_events(helper, ew):
         #Start Server to listen the events.
+        helper.log_info("\n\n\n\n\n\n")
 
         import socket
         import re
+        import struct
 
         base_segment_length = 345
         base_message_length = 219
         policy_name = helper.get_arg("Policy_Name")
-        helper.log_info("policy_name : "+policy_name)
+        helper.log_info("\n\n >   Settings for the FPolicy : "+policy_name+"\n\n")
         name_length = len(policy_name)
-        helper.log_info(type(name_length))
-        helper.log_info("Name Length and Segment Length")
-        helper.log_info(name_length)
-
-        segment_length = base_segment_length + name_length
         message_length = base_message_length + name_length
-        helper.log_info(segment_length)
-
-        length_key = hex(segment_length)
-        length_key = str(length_key)
-        length_key = length_key[3:]
-        helper.log_info("length_key : "+length_key)
-
-        #big_endian = """\"\x00\x00\x01\x""" #+ length_key + str("\"")
-        big_endian = """\"\x00\x00\x01""" + """\x68\""""
-        helper.log_info("Big Endian:")
-        helper.log_info(type(big_endian))
-        helper.log_info(big_endian)
 
         host = helper.get_arg("Server_IP")
         port = int(helper.get_arg("Server_Port"))
@@ -106,8 +91,9 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             hex_data = raw_data[6:-1]
             unk_hex_data = raw_data[:6]
             #helper.log_info(f"\n\n **Received hex data: {hex_data} \n\n")
+            
             data = hex_data.decode()
-            helper.log_info(f"\n\n **Received data decoded: {data} \n\n")
+            #helper.log_info(f"\n\n **Received data decoded: {data} \n\n")
             # here edit find the <SessionId>
             tag_start = "<SessionId>"
             tag_end = "</SessionId>"
@@ -120,29 +106,44 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             match_VsUUID = re.search(pattern, data)
             if (match_VsUUID and match_SessionId):
                 result_SessionId = match_SessionId.group(1)
-                helper.log_info("\n\n >>> SessionId : {}".format(result_SessionId))
+                helper.log_info("\n\n >>> SessionId : {}".format(result_SessionId) + "\n")
                 result_VsUUID = match_VsUUID.group(1)
-                helper.log_info("\n\n >>> VsUUID : {}".format(result_VsUUID))
-                header_resp = ("<?xml version=\"1.0\"?><Header><NotfType>NEGO_RESP</NotfType><ContentLen>"+int(message_length)+"</ContentLen><DataFormat>XML</DataFormat></Header>")
+                helper.log_info("\n\n >>> VsUUID : {}".format(result_VsUUID) + "\n\n")
+                header_resp = ("<?xml version=\"1.0\"?><Header><NotfType>NEGO_RESP</NotfType><ContentLen>"+str(message_length)+"</ContentLen><DataFormat>XML</DataFormat></Header>")
                 # send a header
-                helper.log_info("\n\n --> Header to send : {}".format(header_resp))
+                helper.log_info("\n\n --> Header to send : {}".format(header_resp)+ "\n")
                 # SessionId and VsUUID should change only
                 handshake_resp = ("<?xml version=\"1.0\"?><HandshakeResp><VsUUID>" + ("%s" % (result_VsUUID)) + "</VsUUID><PolicyName>"+policy_name+"</PolicyName><SessionId>"+("%s" % (result_SessionId))+"</SessionId><ProtVersion>1.2</ProtVersion></HandshakeResp>")
-                helper.log_info("\n\n --> Handshake response length below: _ \n")
-                helper.log_info(len(handshake_resp.encode()))
                 try:
                     # send a response
-                    helper.log_info("\n\n --> Response to send : {}".format(handshake_resp))
-                    # client_sock.send(header_resp.encode()+bytes.fromhex('0a 0a')+handshake_resp.encode())
+                    helper.log_info("\n\n --> Response to send : {}".format(header_resp+"\n\n"+handshake_resp)+ "\n\n")
 
-                    client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
-                    #client_sock.send((str(big_endian)+length_key+"""\""""+header_resp+"\n\n"+handshake_resp).encode())
-                    complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
-                    #complete = (str(big_endian)+length_key+"""\""""+header_resp+"\n\n"+handshake_resp).encode()
-                    helper.log_info("\n\n !!! Complete the segment sent below : _ \n")
+                    #the size of the input string
+                    size = len(header_resp+"\n\n"+handshake_resp)
+                    helper.log_info("\n\n # Size of the segment : "+str(size) + "\n")
+
+
+                    # the size in big-endian format
+                    size_bytes = struct.pack('>I', size)
+                    #helper.log_info(size_bytes)
+
+                    # the size bytes and the original string
+                    to_send ="\"".encode('utf-8') + size_bytes + "\"".encode('utf-8') +(header_resp+"\n\n"+handshake_resp).encode('utf-8')
+                    # the results
+                    client_sock.send(to_send)
+                    complete = to_send
+                    helper.log_info("\n\n !!! Complete the segment sent below :  \n")
                     helper.log_info((complete))
+                    helper.log_info("\n\n")
+
+                    #client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
+                    complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
+                    helper.log_info("\n\n [TEST] Complete the segment sent in Simulator :  \n")
+                    helper.log_info((complete))
+                    helper.log_info("\n\n")
                 except IOError as err:
                     helper.log_info('\n\n IO Err.' + str(err))
+                    helper.log_info("\n\n")
             else:
                 #helper.log_info("\n\n SessionId and VsUUID not found.^^ Check the data above ^^")
                 #TODO: An event came, write that to an Index.
