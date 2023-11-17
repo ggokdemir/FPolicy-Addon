@@ -176,6 +176,26 @@
                             "options": {
                                 "placeholder": "ex: 12345"
                             }
+                        },
+                        {
+                            "type": "text",
+                            "label": "Policy Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z_-]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 30",
+                                    "minLength": 1,
+                                    "maxLength": 30
+                                }
+                            ],
+                            "field": "Policy_Name",
+                            "help": "FPolicy File Policy name.",
+                            "required": true
                         }
                     ],
                     "title": "server_input"
@@ -232,6 +252,10 @@
                     {
                         "label": "External Server IP",
                         "field": "Server_IP"
+                    },
+                    {
+                        "label": "FPolicy Name",
+                        "field": "Policy_Name"
                     }
                 ]
             }
@@ -253,7 +277,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.2.2",
+        "version": "0.4.0",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }

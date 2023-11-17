@@ -52,6 +52,21 @@ fields = [
             min_len=2, 
         )
     ), 
+    field.RestField(
+        'Policy_Name',
+        required=True,
+        encrypted=False,
+        default=None,
+        validator=validator.AllOf(
+            validator.Pattern(
+                regex=r"""^[a-zA-Z_-]\w*$""", 
+            ), 
+            validator.String(
+                max_len=30, 
+                min_len=1, 
+            )
+        )
+    ), 
 
     field.RestField(
         'disabled',

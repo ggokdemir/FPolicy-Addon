@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "fpolicy_addon_for_splunk",
-        "version": "0.2.2",
+        "version": "0.4.0",
         "description": "FPolicy Add-on for Splunk",
         "contact": {
             "name": "Gurkan Gokdemir",
@@ -85,6 +85,9 @@
                     "Server_Port": {
                         "type": "string"
                     },
+                    "Policy_Name": {
+                        "type": "string"
+                    },
                     "disabled": {
                         "type": "string",
                         "enum": [
@@ -107,6 +110,9 @@
                         "type": "string"
                     },
                     "Server_Port": {
+                        "type": "string"
+                    },
+                    "Policy_Name": {
                         "type": "string"
                     },
                     "disabled": {
@@ -134,6 +140,9 @@
                         "type": "string"
                     },
                     "Server_Port": {
+                        "type": "string"
+                    },
+                    "Policy_Name": {
                         "type": "string"
                     }
                 }
