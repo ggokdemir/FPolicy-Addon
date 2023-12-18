@@ -1,0 +1,128 @@
+{
+  "go": {
+    "recognized": [
+      ".go"
+    ],
+    "other": []
+  },
+  "java": {
+    "recognized": [
+      ".java"
+    ],
+    "other": [
+      ".class",
+      ".jar",
+      ".war",
+      ".jsp",
+      ".jsf"
+    ]
+  },
+  "javascript": {
+    "recognized": [
+      ".js",
+      ".jsx"
+    ],
+    "other": [
+      ".syjs"
+    ]
+  },
+  "json": {
+    "recognized": [
+      ".json"
+    ],
+    "other": []
+  },
+  "python": {
+    "recognized": [
+      ".py",
+      ".pyi"
+    ],
+    "other": [
+      ".pyc",
+      ".egg",
+      ".pyo",
+      ".sypy",
+      ".pyw"
+    ]
+  },
+  "ruby": {
+    "recognized": [
+      ".rb"
+    ],
+    "other": [
+      ".erb"
+    ]
+  },
+  "typescript": {
+    "recognized": [
+      ".ts",
+      ".tsx"
+    ],
+    "other": []
+  },
+  "jsx": {
+    "recognized": [
+      ".js",
+      ".jsx"
+    ],
+    "other": []
+  },
+  "tsx": {
+    "recognized": [
+      ".ts",
+      ".tsx"
+    ],
+    "other": []
+  },
+  "ocaml": {
+    "recognized": [
+      ".ml",
+      ".mli"
+    ],
+    "other": []
+  },
+  "php": {
+    "recognized": [
+      ".php"
+    ],
+    "other": [
+      ".php3",
+      ".php4",
+      ".php5",
+      ".phps",
+      ".phtml"
+    ]
+  },
+  "c": {
+    "recognized": [
+      ".c"
+    ],
+    "other": []
+  },
+  "yaml": {
+    "recognized": [
+      ".yaml"
+    ],
+    "other": []
+  },
+  "rust": {
+    "recognized": [
+      ".rs"
+    ],
+    "other": []
+  },
+  "lua": {
+    "recognized": [
+      ".lua"
+    ],
+    "other": []
+  },
+  "c#": {
+    "recognized": [
+      ".cs"
+    ],
+    "other": [
+      ".egt"
+    ]
+  }
+}

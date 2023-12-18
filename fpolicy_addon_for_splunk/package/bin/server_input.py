@@ -14,6 +14,12 @@ from solnlib import log
 from solnlib.modular_input import checkpointer
 from splunktaucclib.modinput_wrapper import base_modinput  as base_mi 
 
+import socket
+import re
+import struct
+import xml.etree.ElementTree as ET
+import json
+
 bin_dir  = os.path.basename(__file__)
 app_name = os.path.basename(os.path.dirname(os.getcwd()))
 
@@ -57,12 +63,8 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         return "app_name" 
 
     def collect_events(helper, ew):
-        #Start Server to listen the events.
+        #Start Server to listen the file events.
         helper.log_info("\n\n\n\n\n\n")
-
-        import socket
-        import re
-        import struct
 
         base_segment_length = 345
         base_message_length = 219
@@ -158,8 +160,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 index=helper.get_arg("index")
                 account=helper.get_arg("account")['name']
 
-                import xml.etree.ElementTree as ET
-                import json
+
 
                 try:
                     root = ET.fromstring(data)
