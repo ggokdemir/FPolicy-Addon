@@ -138,11 +138,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     helper.log_info((complete))
                     helper.log_info("\n\n")
 
-                    #client_sock.send(("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode())
-                    complete = ("""\"\x00\x00\x01\x68\""""+header_resp+"\n\n"+handshake_resp).encode()
-                    helper.log_info("\n\n [TEST] Complete the segment sent in Simulator :  \n")
-                    helper.log_info((complete))
-                    helper.log_info("\n\n")
+
                 except IOError as err:
                     helper.log_info('\n\n IO Err.' + str(err))
                     helper.log_info("\n\n")
