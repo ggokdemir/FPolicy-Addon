@@ -145,6 +145,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             else:
                 #helper.log_info("\n\n SessionId and VsUUID not found.^^ Check the data above ^^")
                 #TODO: An event came, write that to an Index.
+                #FIXME: Why it doesn't show or write?
 
                 data = hex_data.decode()
                 helper.log_info(f"\n\n ===> Data to write: \n {data} \n\n")
