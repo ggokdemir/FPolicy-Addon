@@ -141,9 +141,9 @@
                         },
                         {
                             "type": "text",
-                            "label": "External Server IP",
+                            "label": "Add-on Server IP",
                             "field": "Server_IP",
-                            "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy. (Use the external IP of the Splunk instance. )",
                             "defaultValue": "localhost",
                             "required": true,
                             "validators": [
@@ -160,9 +160,9 @@
                         },
                         {
                             "type": "text",
-                            "label": "External Server Port",
+                            "label": "Add-on Server Port",
                             "field": "Server_Port",
-                            "help": "Port number for the Add-on as an External Server. Please see the external engine settings of FPolicy.",
+                            "help": "Port number for the Add-on as an External Server. Please see the external engine settings of FPolicy. (Use an unused port number for each input.)",
                             "defaultValue": "1337",
                             "required": true,
                             "validators": [
@@ -176,6 +176,26 @@
                             "options": {
                                 "placeholder": "ex: 12345"
                             }
+                        },
+                        {
+                            "type": "text",
+                            "label": "Policy Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores or hyphen.",
+                                    "pattern": "^[a-zA-Z0-9_-]*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 30",
+                                    "minLength": 1,
+                                    "maxLength": 30
+                                }
+                            ],
+                            "field": "Policy_Name",
+                            "help": "FPolicy File Policy Name. Please see the 'vserver fpolicy policy show' output. (Use the same Policy Name for a successful handshake with FPolicy. )",
+                            "required": true
                         }
                     ],
                     "title": "server_input"
@@ -226,12 +246,16 @@
                         }
                     },
                     {
-                        "label": "External Server Port",
+                        "label": "Add-on Server Port",
                         "field": "Server_Port"
                     },
                     {
-                        "label": "External Server IP",
+                        "label": "Add-on Server IP",
                         "field": "Server_IP"
+                    },
+                    {
+                        "label": "FPolicy Name",
+                        "field": "Policy_Name"
                     }
                 ]
             }
@@ -253,7 +277,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.7.1",
+        "version": "0.0.0R453c08c",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }
