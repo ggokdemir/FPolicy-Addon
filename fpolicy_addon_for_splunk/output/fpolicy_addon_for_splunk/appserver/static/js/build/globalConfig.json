@@ -143,7 +143,7 @@
                             "type": "text",
                             "label": "Add-on Server IP",
                             "field": "Server_IP",
-                            "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy. (Use the external IP of the Splunk instance. )",
+                            "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy. (Use the external IP of the Splunk instance.)",
                             "defaultValue": "localhost",
                             "required": true,
                             "validators": [
@@ -277,7 +277,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "0.0.0R453c08c",
+        "version": "0.0.0Rbb0d421",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }
