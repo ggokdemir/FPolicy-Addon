@@ -139,6 +139,13 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 except IOError as err:
                     helper.log_error('\n\n [ERROR] IO Error (Handshake) ' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
+                try:
+                    # close the socket
+                    client_sock.close()
+                    helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                except IOError as err:
+                    helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+
             else:
                 #An event came, write that to an Index.
                 helper.log_info(f"\n\n [INFO] No match_VsUUID and match_SessionId. [FPolicy : "+policy_name+"] \n\n")
@@ -176,6 +183,14 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_info("\n\n [INFO] Event Inserted in JSON format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+json_data+" [FPolicy : "+policy_name+"] \n\n")
                     except:
                         helper.log_error("\n\n [ERROR] Error inserting JSON event. [FPolicy : "+policy_name+"] \n\n")
+                    
+                    try:
+                        # close the socket
+                        client_sock.close()
+                        helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                    except IOError as err:
+                        helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+
 
                 except:
                     try:
@@ -186,12 +201,12 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     except:
                         helper.log_error("\n\n [ERROR] Error inserting XML event. [FPolicy : "+policy_name+"] \n\n")
 
-                try:
-                    # close the socket
-                    client_sock.close()
-                    helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
-                except IOError as err:
-                    helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                    try:
+                        # close the socket
+                        client_sock.close()
+                        helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                    except IOError as err:
+                        helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
 
     def get_account_fields(self):
