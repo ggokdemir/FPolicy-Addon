@@ -19,6 +19,7 @@ import re
 import struct
 import xml.etree.ElementTree as ET
 import json
+import time
 
 bin_dir  = os.path.basename(__file__)
 app_name = os.path.basename(os.path.dirname(os.getcwd()))
@@ -65,46 +66,60 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
     def collect_events(helper, ew):
         #Start the Add-on Server to listen to the file events.
 
-        base_segment_length = 345
-        base_message_length = 219
-        policy_name = helper.get_arg("Policy_Name")
-        helper.log_info("\n\n [INFO] Settings for the FPolicy : ["+policy_name+"] \n\n")
-        name_length = len(policy_name)
-        message_length = base_message_length + name_length
-
-        host = helper.get_arg("Server_IP")
-        port = int(helper.get_arg("Server_Port"))
-        # socket object
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # bind the socket
-        sock.bind((host, port))
-        sock.listen(1)
-        # listen for one connection at a time
-        helper.log_info(f"\n\n [INFO] Listening on {host}:{port} [FPolicy : "+policy_name+"] \n\n")
-
         while True:
-            # wait for a connection
-            client_sock, client_addr = sock.accept()
-            helper.log_info(f"\n\n [INFO] Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+            base_segment_length = 345
+            base_message_length = 219
+            policy_name = helper.get_arg("Policy_Name")
+            helper.log_info("\n\n [INFO] Settings for the FPolicy : ["+policy_name+"] \n\n")
+            name_length = len(policy_name)
+            message_length = base_message_length + name_length
 
-            # receive text data
-            raw_data = client_sock.recv(1024)
-            helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
-            #cut the non decode part, then decode
-            hex_data = raw_data[6:-1]
-            unk_hex_data = raw_data[:6]
-            data = hex_data.decode()
+            host = helper.get_arg("Server_IP")
+            port = int(helper.get_arg("Server_Port"))
+            # socket object
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-            # here edit find the <SessionId>
-            tag_start = "<SessionId>"
-            tag_end = "</SessionId>"
-            pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
-            match_SessionId = re.search(pattern, data)
-            # here edit find the <VsUUID>
-            tag_start = "<VsUUID>"
-            tag_end = "</VsUUID>"
-            pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
-            match_VsUUID = re.search(pattern, data)
+            #FIXME: OSError: [Errno 98] Address already in use
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            # bind the socket
+            try:
+                sock.bind((host, port))
+                helper.log_info(f"\n\n [INFO] Socket successfully bound to {host}:{port} [FPolicy : "+policy_name+"] \n\n")
+                sock.listen(1)
+                # listen for one connection at a time
+                helper.log_info(f"\n\n [INFO] Listening on {host}:{port} [FPolicy : "+policy_name+"] \n\n")
+                # wait for a connection
+                client_sock, client_addr = sock.accept()
+                helper.log_info(f"\n\n [INFO] Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+
+                # receive text data
+                raw_data = client_sock.recv(1024)
+                helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                #cut the non decode part, then decode
+                hex_data = raw_data[6:-1]
+                unk_hex_data = raw_data[:6]
+                data = hex_data.decode()
+
+                # here edit find the <SessionId>
+                tag_start = "<SessionId>"
+                tag_end = "</SessionId>"
+                pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
+                match_SessionId = re.search(pattern, data)
+                # here edit find the <VsUUID>
+                tag_start = "<VsUUID>"
+                tag_end = "</VsUUID>"
+                pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
+                match_VsUUID = re.search(pattern, data)
+
+            except socket.error as e:
+                helper.log_error(f"\n\n [ERROR] Error binding socket: {e} [FPolicy : "+policy_name+"] \n\n")
+                sock.close()
+                match_VsUUID=False
+                match_SessionId=False
+                data=False
+                helper.log_info(f"\n\n [INFO] Will try in 60 seconds. [FPolicy : "+policy_name+"] \n\n")
+                time.sleep(60)
 
             if (match_VsUUID and match_SessionId):
                 result_SessionId = match_SessionId.group(1)
@@ -140,13 +155,22 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     helper.log_error('\n\n [ERROR] IO Error (Handshake) ' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
                 try:
+                    # shutdown the socket
+                    client_sock.shutdown(socket.SHUT_RDWR)
+                    helper.log_info('\n\n [INFO] socket.shutdown(socket.SHUT_RDWR) is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                except IOError as err:
+                    helper.log_error('\n\n [ERROR] IO Error - socket.shutdown()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                try:
                     # close the socket
                     client_sock.close()
+                    sock.close()
                     helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
                 except IOError as err:
                     helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
-
-            else:
+                    client_sock.close()
+                    sock.close()
+                    
+            elif(data):
                 #An event came, write that to an Index.
                 helper.log_info(f"\n\n [INFO] No match_VsUUID and match_SessionId. [FPolicy : "+policy_name+"] \n\n")
                 data = hex_data.decode()
@@ -185,11 +209,20 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_error("\n\n [ERROR] Error inserting JSON event. [FPolicy : "+policy_name+"] \n\n")
                     
                     try:
+                        # shutdown the socket
+                        client_sock.shutdown(socket.SHUT_RDWR)
+                        helper.log_info('\n\n [INFO] socket.shutdown(socket.SHUT_RDWR) is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                    except IOError as err:
+                        helper.log_error('\n\n [ERROR] IO Error - socket.shutdown()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                    try:
                         # close the socket
                         client_sock.close()
+                        sock.close()
                         helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
                     except IOError as err:
                         helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                        client_sock.close()
+                        sock.close()
 
 
                 except:
@@ -202,12 +235,24 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_error("\n\n [ERROR] Error inserting XML event. [FPolicy : "+policy_name+"] \n\n")
 
                     try:
+                        # shutdown the socket
+                        client_sock.shutdown(socket.SHUT_RDWR)
+                        helper.log_info('\n\n [INFO] socket.shutdown(socket.SHUT_RDWR) is successful. '+" [FPolicy : "+policy_name+"] \n\n")
+                    except IOError as err:
+                        helper.log_error('\n\n [ERROR] IO Error - socket.shutdown()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                    try:
                         # close the socket
                         client_sock.close()
+                        sock.close()
                         helper.log_info('\n\n [INFO] socket.close() is successful. '+" [FPolicy : "+policy_name+"] \n\n")
                     except IOError as err:
                         helper.log_error('\n\n [ERROR] IO Error - socket.close()' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                        client_sock.close()
+                        sock.close()
 
+            else:
+                helper.log_info(f"\n\n [INFO] Will try in 60 seconds. [FPolicy : "+policy_name+"] \n\n")
+                time.sleep(60)
 
     def get_account_fields(self):
         account_fields = []

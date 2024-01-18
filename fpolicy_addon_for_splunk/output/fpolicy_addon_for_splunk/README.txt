@@ -10,7 +10,7 @@ Network Connection between End User, ONTAP FPolicy, and Splunk Enterprise.
 More Info About the Add-on
 The FPolicy Add-on for Splunk:
 (20/10/2023) version 0.6.5 → Initial tests with cloud instance done.
-(20/12/2023) version 0.7.1 → Logging update. (splunk/var/log/splunk/server_input.log)
+(20/12/2023) version 0.8.4 → Logging update. (splunk/var/log/splunk/server_input.log)
 
 Under the same subnet, it should be able to send and process;
 KEEP_ALIVE.xml, NEGO_REQ.xml, and SCREEN_REQ.xml

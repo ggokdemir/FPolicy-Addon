@@ -105,12 +105,19 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             tag_end = "</VsUUID>"
             pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
             match_VsUUID = re.search(pattern, data)
+            # here edit find the <NotfType>
+            tag_start = "<NotfType>"
+            tag_end = "</NotfType>"
+            pattern = f'{re.escape(tag_start)}(.*?)\s*{re.escape(tag_end)}'
+            match_NotfType = re.search(pattern, data)
 
-            if (match_VsUUID and match_SessionId):
+            if (match_VsUUID and match_SessionId and match_NotfType == "NEGO_REQ"):
                 result_SessionId = match_SessionId.group(1)
                 helper.log_info("\n\n [INFO] SessionId : {}".format(result_SessionId) +" [FPolicy : "+policy_name+"] \n\n")
                 result_VsUUID = match_VsUUID.group(1)
                 helper.log_info("\n\n [INFO] VsUUID : {}".format(result_VsUUID) + " [FPolicy : "+policy_name+"] \n\n")
+                result_NotfType = match_NotfType.group(1)
+                helper.log_info("\n\n [INFO] NotfType : {}".format(result_NotfType) + " [FPolicy : "+policy_name+"] \n\n")
 
                 header_resp = ("<?xml version=\"1.0\"?><Header><NotfType>NEGO_RESP</NotfType><ContentLen>"+str(message_length)+"</ContentLen><DataFormat>XML</DataFormat></Header>")
                 # send a header
