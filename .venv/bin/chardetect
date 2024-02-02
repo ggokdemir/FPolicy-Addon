@@ -1,4 +1,4 @@
-#!/Users/ggokdemir/Desktop/FPolicy-ver2/.venv/bin/python3
+#!/Users/ggokdemir/Desktop/FPolicy-Addon/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

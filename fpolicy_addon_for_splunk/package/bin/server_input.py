@@ -68,7 +68,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         base_segment_length = 345
         base_message_length = 219
         policy_name = helper.get_arg("Policy_Name")
-        helper.log_info("\n\n [INFO] Settings for the FPolicy : ["+policy_name+"] \n\n")
+        #helper.log_info("\n\n [INFO] Settings for the FPolicy : ["+policy_name+"] \n\n")
         name_length = len(policy_name)
         message_length = base_message_length + name_length
 
@@ -84,10 +84,14 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         accept_counter = 0
 
         while True:
+            # get input values
+            index=helper.get_arg("index")
+            account=helper.get_arg("account")['name']
+
             # wait for a connection
             client_sock, client_addr = sock.accept()
             accept_counter=accept_counter+1
-            helper.log_info(f"\n\n [INFO] (loop:"+accept_counter+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+            helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
 
             # receive text data
             raw_data = client_sock.recv(1024)
@@ -119,22 +123,22 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
             if (match_VsUUID and match_SessionId and result_NotfType == 'NEGO_REQ'):
                 result_SessionId = match_SessionId.group(1)
-                helper.log_info("\n\n [INFO] SessionId : {}".format(result_SessionId) +" [FPolicy : "+policy_name+"] \n\n")
+                #helper.log_info("\n\n [INFO] SessionId : {}".format(result_SessionId) +" [FPolicy : "+policy_name+"] \n\n")
                 result_VsUUID = match_VsUUID.group(1)
-                helper.log_info("\n\n [INFO] VsUUID : {}".format(result_VsUUID) + " [FPolicy : "+policy_name+"] \n\n")
+                #helper.log_info("\n\n [INFO] VsUUID : {}".format(result_VsUUID) + " [FPolicy : "+policy_name+"] \n\n")
 
                 header_resp = ("<?xml version=\"1.0\"?><Header><NotfType>NEGO_RESP</NotfType><ContentLen>"+str(message_length)+"</ContentLen><DataFormat>XML</DataFormat></Header>")
                 # send a header
-                helper.log_info("\n\n [INFO] Header to send : {}".format(header_resp)+" [FPolicy : "+policy_name+"] \n\n")
+                #helper.log_info("\n\n [INFO] Header to send : {}".format(header_resp)+" [FPolicy : "+policy_name+"] \n\n")
                 # SessionId and VsUUID should change only
                 handshake_resp = ("<?xml version=\"1.0\"?><HandshakeResp><VsUUID>" + ("%s" % (result_VsUUID)) + "</VsUUID><PolicyName>"+policy_name+"</PolicyName><SessionId>"+("%s" % (result_SessionId))+"</SessionId><ProtVersion>1.2</ProtVersion></HandshakeResp>")
 
                 try:
                     # send a response
-                    helper.log_info("\n\n [INFO] Response to send : {}".format(header_resp+"\n\n"+handshake_resp)+" [FPolicy : "+policy_name+"] \n\n")
+                    #helper.log_info("\n\n [INFO] Response to send : {}".format(header_resp+"\n\n"+handshake_resp)+" [FPolicy : "+policy_name+"] \n\n")
                     #the size of the input string
                     size = len(header_resp+"\n\n"+handshake_resp)
-                    helper.log_info("\n\n [INFO] Size of the segment : "+str(size) +" [FPolicy : "+policy_name+"] \n\n")
+                    #helper.log_info("\n\n [INFO] Size of the segment : "+str(size) +" [FPolicy : "+policy_name+"] \n\n")
                     # the size in big-endian format
                     size_bytes = struct.pack('>I', size)
                     # the size bytes and the original string
@@ -145,18 +149,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     complete = to_send
                     helper.log_info("\n\n [INFO] Complete the segment sent below  [FPolicy : "+policy_name+"] : \n")
                     helper.log_info((complete))
-                    helper.log_info("\n [INFO] Please confirm if handshake is successful by using FPolicy console. [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_info("\n [INFO] Please confirm if handshake is/was successful by using FPolicy console. [FPolicy : "+policy_name+"] \n\n")
                 except IOError as err:
                     helper.log_error('\n\n [ERROR] IO Error (Handshake) ' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
                 try:
                     client_sock, client_addr = sock.accept()
                     accept_counter=accept_counter+1
-                    helper.log_info(f"\n\n [INFO] (loop:"+accept_counter+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
                     
                     # receive text data
                     raw_data = client_sock.recv(1024)
-                    helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                    #helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                     #cut the non decode part, then decode
                     hex_data = raw_data[6:-1]
                     unk_hex_data = raw_data[:6]
@@ -167,18 +171,14 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     ew.write_event(event)
                     helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+data+" [FPolicy : "+policy_name+"] \n\n")
                 except IOError as err:
-                    helper.log_error('\n\n [ERROR] IO Error - (loop:2)' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_error("\n\n [ERROR](loop:"+str(accept_counter)+") IO Error - " + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
             # if match_VsUUID and match_SessionId and result_NotfType == 'NEGO_REQ': FALSE
             else:
                 #An event came, write that to an Index.
                 helper.log_info(f"\n\n [INFO] No match_VsUUID, match_SessionId and match_NotfType == NEGO_REQ. [FPolicy : "+policy_name+"] \n\n")
                 data = hex_data.decode()
-                helper.log_info(f"\n\n [INFO] Data to write to an Index: \n {data} \n [FPolicy : "+policy_name+"] \n\n")
-
-                # get input values
-                index=helper.get_arg("index")
-                account=helper.get_arg("account")['name']
+                #helper.log_info(f"\n\n [INFO] Data to write to an Index: \n {data} \n [FPolicy : "+policy_name+"] \n\n")
 
                 #TRY TO CONVERT JSON
                 try:
@@ -212,11 +212,11 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     try:
                         client_sock, client_addr = sock.accept()
                         accept_counter=accept_counter+1
-                        helper.log_info(f"\n\n [INFO] (loop:"+accept_counter+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+                        helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
 
                         # receive text data
                         raw_data = client_sock.recv(1024)
-                        helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                        #helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                         #cut the non decode part, then decode
                         hex_data = raw_data[6:-1]
                         unk_hex_data = raw_data[:6]
@@ -242,11 +242,11 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 try:
                     client_sock, client_addr = sock.accept()
                     accept_counter=accept_counter+1
-                    helper.log_info(f"\n\n [INFO] (loop:"+accept_counter+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_error("\n\n [ERROR] IO Error - (loop:"+str(accept_counter)+") " + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
                     # receive text data
                     raw_data = client_sock.recv(1024)
-                    helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                    #helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                     #cut the non decode part, then decode
                     hex_data = raw_data[6:-1]
                     unk_hex_data = raw_data[:6]
@@ -257,7 +257,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     ew.write_event(event)
                     helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+data+" [FPolicy : "+policy_name+"] \n\n")
                 except IOError as err:
-                    helper.log_error('\n\n [ERROR] IO Error - (loop:2)' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_error("\n\n [ERROR](loop:"+str(accept_counter)+") IO Error - " + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
 
     def get_account_fields(self):
