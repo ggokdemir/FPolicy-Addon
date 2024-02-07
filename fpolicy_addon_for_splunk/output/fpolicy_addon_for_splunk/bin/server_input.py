@@ -83,12 +83,44 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         helper.log_info(f"\n\n [INFO] Listening on {host}:{port} [FPolicy : "+policy_name+"] \n\n")
         accept_counter = 0
 
+        # get input values
+        index=helper.get_arg("index")
+        account=helper.get_arg("account")['name']
+        
+        # wait for the first connection
+        helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
+        client_sock, client_addr = sock.accept()
+        accept_counter=accept_counter+1
+        helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+
         while True:
-            # get input values
-            index=helper.get_arg("index")
-            account=helper.get_arg("account")['name']
+
+            #FIXME:
+            helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
+            all_data = ""
+            while True:
+                raw_data = ""
+                # receive text data
+                raw_data = client_sock.recv(1024)
+                if raw_data: 
+                    helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                    all_data += raw_data.decode()
+                    helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                else: 
+                    break
+
+            if all_data:
+                #cut the non decode part, then decode
+                helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                ew.write_event(event)
+                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+            #FIXME:
 
             # wait for a connection
+            helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
             client_sock, client_addr = sock.accept()
             accept_counter=accept_counter+1
             helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -154,6 +186,31 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     helper.log_error('\n\n [ERROR] IO Error (Handshake) ' + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
                 try:
+                    #FIXME:
+                    helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
+                    all_data = ""
+                    while True:
+                        raw_data = ""
+                        # receive text data
+                        raw_data = client_sock.recv(1024)
+                        if raw_data: 
+                            helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                            all_data += raw_data.decode()
+                            helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                        else: 
+                            break
+
+                    if all_data:
+                        #cut the non decode part, then decode
+                        helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                        ew.write_event(event)
+                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                    #FIXME:
+
+                    helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
                     client_sock, client_addr = sock.accept()
                     accept_counter=accept_counter+1
                     helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -210,6 +267,31 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_error("\n\n [ERROR] Error inserting JSON event. [FPolicy : "+policy_name+"] \n\n")
                     
                     try:
+                        #FIXME:
+                        helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
+                        all_data = ""
+                        while True:
+                            raw_data = ""
+                            # receive text data
+                            raw_data = client_sock.recv(1024)
+                            if raw_data: 
+                                helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                                all_data += raw_data.decode()
+                                helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                            else: 
+                                break
+
+                        if all_data:
+                            #cut the non decode part, then decode
+                            helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                            ew.write_event(event)
+                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                        #FIXME:
+                        
+                        helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
                         client_sock, client_addr = sock.accept()
                         accept_counter=accept_counter+1
                         helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -240,7 +322,32 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_error("\n\n [ERROR] Error inserting XML event. [FPolicy : "+policy_name+"] \n\n")
 
                 try:
+                    #FIXME:
+                    helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
+                    all_data = ""
+                    while True:
+                        raw_data = ""
+                        # receive text data
+                        raw_data = client_sock.recv(1024)
+                        if raw_data: 
+                            helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                            all_data += raw_data.decode()
+                            helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                        else: 
+                            break
+
+                    if all_data:
+                        #cut the non decode part, then decode
+                        helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                        ew.write_event(event)
+                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                    #FIXME:
+
                     client_sock, client_addr = sock.accept()
+
                     accept_counter=accept_counter+1
                     helper.log_error("\n\n [ERROR] IO Error - (loop:"+str(accept_counter)+") " + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
