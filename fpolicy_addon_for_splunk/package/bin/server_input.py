@@ -88,6 +88,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         account=helper.get_arg("account")['name']
         
         # wait for the first connection
+        helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
         client_sock, client_addr = sock.accept()
         accept_counter=accept_counter+1
         helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -95,6 +96,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         while True:
 
             #FIXME:
+            helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
             all_data = ""
             while True:
                 raw_data = ""
@@ -118,6 +120,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
             #FIXME:
 
             # wait for a connection
+            helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
             client_sock, client_addr = sock.accept()
             accept_counter=accept_counter+1
             helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -184,6 +187,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
                 try:
                     #FIXME:
+                    helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
                     all_data = ""
                     while True:
                         raw_data = ""
@@ -206,6 +210,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                     #FIXME:
 
+                    helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
                     client_sock, client_addr = sock.accept()
                     accept_counter=accept_counter+1
                     helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -263,6 +268,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     
                     try:
                         #FIXME:
+                        helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
                         all_data = ""
                         while True:
                             raw_data = ""
@@ -284,7 +290,8 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                             ew.write_event(event)
                             helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                         #FIXME:
-                            
+                        
+                        helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
                         client_sock, client_addr = sock.accept()
                         accept_counter=accept_counter+1
                         helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
@@ -316,6 +323,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
                 try:
                     #FIXME:
+                    helper.log_info(f"\n\n [INFO] Waiting... [FPolicy : "+policy_name+"] \n\n")
                     all_data = ""
                     while True:
                         raw_data = ""
@@ -339,6 +347,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     #FIXME:
 
                     client_sock, client_addr = sock.accept()
+
                     accept_counter=accept_counter+1
                     helper.log_error("\n\n [ERROR] IO Error - (loop:"+str(accept_counter)+") " + str(err)+" [FPolicy : "+policy_name+"] \n\n")
 
