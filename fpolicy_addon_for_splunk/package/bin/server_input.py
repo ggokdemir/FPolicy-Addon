@@ -20,11 +20,6 @@ import struct
 import xml.etree.ElementTree as ET
 import json
 
-import sys, os
-sys.path.append(os.path.join(os.environ['SPLUNK_HOME'],'etc','apps','SA-VSCode','bin'))
-import splunk_debug as dbg
-dbg.enable_debugging(timeout=25)
-
 bin_dir  = os.path.basename(__file__)
 app_name = os.path.basename(os.path.dirname(os.getcwd()))
 
@@ -88,10 +83,16 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
         helper.log_info(f"\n\n [INFO] Listening on {host}:{port} [FPolicy : "+policy_name+"] \n\n")
         accept_counter = 0
 
+        # get input values
+        index=helper.get_arg("index")
+        account=helper.get_arg("account")['name']
+        
+        # wait for the first connection
+        client_sock, client_addr = sock.accept()
+        accept_counter=accept_counter+1
+        helper.log_info(f"\n\n [INFO] (loop:"+str(accept_counter)+") Connection from {client_addr} [FPolicy : "+policy_name+"] \n\n")
+
         while True:
-            # get input values
-            index=helper.get_arg("index")
-            account=helper.get_arg("account")['name']
 
             #FIXME:
             all_data = ""
