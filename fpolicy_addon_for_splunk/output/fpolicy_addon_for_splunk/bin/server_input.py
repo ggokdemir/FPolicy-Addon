@@ -102,10 +102,20 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 raw_data = ""
                 # receive text data
                 raw_data = client_sock.recv(1024)
+                helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                #cut the non decode part, then decode
+                raw_data = raw_data[6:-1]
+
                 if raw_data: 
                     helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                     all_data += raw_data.decode()
                     helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                    helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                    sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                    event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                    ew.write_event(event)
+                    helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                 else: 
                     break
 
@@ -193,12 +203,24 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         raw_data = ""
                         # receive text data
                         raw_data = client_sock.recv(1024)
+                        helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                        #cut the non decode part, then decode
+                        raw_data = raw_data[6:-1]
+
+
                         if raw_data: 
                             helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                             all_data += raw_data.decode()
                             helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                            helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                            ew.write_event(event)
+                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                         else: 
                             break
+
 
                     if all_data:
                         #cut the non decode part, then decode
@@ -274,10 +296,20 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                             raw_data = ""
                             # receive text data
                             raw_data = client_sock.recv(1024)
+                            helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                            #cut the non decode part, then decode
+                            raw_data = raw_data[6:-1]
+
                             if raw_data: 
                                 helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                                 all_data += raw_data.decode()
                                 helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                                helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                                ew.write_event(event)
+                                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                             else: 
                                 break
 
@@ -329,12 +361,23 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                         raw_data = ""
                         # receive text data
                         raw_data = client_sock.recv(1024)
+                        helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
+                        #cut the non decode part, then decode
+                        raw_data = raw_data[6:-1]
+
                         if raw_data: 
                             helper.log_info(f"\n\n [INFO] Received raw data: {raw_data}  [FPolicy : "+policy_name+"] \n\n")
                             all_data += raw_data.decode()
                             helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+                            helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
+
+                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
+                            ew.write_event(event)
+                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
                         else: 
                             break
+
 
                     if all_data:
                         #cut the non decode part, then decode
