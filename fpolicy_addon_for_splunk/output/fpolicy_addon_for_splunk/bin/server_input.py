@@ -112,10 +112,17 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
                     helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
 
-                    sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                    event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                    ew.write_event(event)
-                    helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                    #TODO:
+                    divider = "<?xml version=\"1.0\"?>"
+                    if all_data:  # Check if all_data is empty 
+                        items = all_data.split(divider)
+                        for item in items:
+                            #  removes leading/trailing whitespace
+                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                            ew.write_event(event)
+                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                    #TODO:
                 else: 
                     break
 
@@ -123,10 +130,17 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                 #cut the non decode part, then decode
                 helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
 
-                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                ew.write_event(event)
-                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                #TODO:
+                divider = "<?xml version=\"1.0\"?>"
+                if all_data:  # Check if all_data is empty 
+                    items = all_data.split(divider)
+                    for item in items:
+                        #  removes leading/trailing whitespace
+                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                        ew.write_event(event)
+                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                #TODO:
             #FIXME:
 
             # wait for a connection
@@ -214,10 +228,17 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                             helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
                             helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
 
-                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                            ew.write_event(event)
-                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                            #TODO:
+                            divider = "<?xml version=\"1.0\"?>"
+                            if all_data:  # Check if all_data is empty 
+                                items = all_data.split(divider)
+                                for event in items:
+                                    #  removes leading/trailing whitespace
+                                    sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                    event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                    ew.write_event(event)
+                                    helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                            #TODO:
                         else: 
                             break
 
@@ -225,11 +246,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     if all_data:
                         #cut the non decode part, then decode
                         helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
-
-                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                        ew.write_event(event)
-                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                        
+                        #TODO:
+                        divider = "<?xml version=\"1.0\"?>"
+                        if all_data:  # Check if all_data is empty 
+                            items = all_data.split(divider)
+                            for event in items:
+                                #  removes leading/trailing whitespace
+                                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                ew.write_event(event)
+                                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                        #TODO:
                     #FIXME:
 
                     helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
@@ -305,11 +333,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                                 all_data += raw_data.decode()
                                 helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
                                 helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
-
-                                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                                ew.write_event(event)
-                                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                                
+                                #TODO:
+                                divider = "<?xml version=\"1.0\"?>"
+                                if all_data:  # Check if all_data is empty 
+                                    items = all_data.split(divider)
+                                    for event in items:
+                                        #  removes leading/trailing whitespace
+                                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                        ew.write_event(event)
+                                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                                #TODO:
                             else: 
                                 break
 
@@ -317,10 +352,17 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                             #cut the non decode part, then decode
                             helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
 
-                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                            ew.write_event(event)
-                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                            #TODO:
+                            divider = "<?xml version=\"1.0\"?>"
+                            if all_data:  # Check if all_data is empty 
+                                items = all_data.split(divider)
+                                for event in items:
+                                    #  removes leading/trailing whitespace
+                                    sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                    event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                    ew.write_event(event)
+                                    helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                            #TODO:
                         #FIXME:
                         
                         helper.log_info(f"\n\n [INFO] Listening... [FPolicy : "+policy_name+"] \n\n")
@@ -370,11 +412,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                             all_data += raw_data.decode()
                             helper.log_info(f"\n\n [INFO] Received all data: {all_data}  [FPolicy : "+policy_name+"] \n\n")
                             helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
-
-                            sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                            event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                            ew.write_event(event)
-                            helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                            
+                            #TODO:
+                            divider = "<?xml version=\"1.0\"?>"
+                            if all_data:  # Check if all_data is empty 
+                                items = all_data.split(divider)
+                                for event in items:
+                                    #  removes leading/trailing whitespace
+                                    sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                    event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                    ew.write_event(event)
+                                    helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                            #TODO:
                         else: 
                             break
 
@@ -382,11 +431,18 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
                     if all_data:
                         #cut the non decode part, then decode
                         helper.log_info(f"\n\n [INFO] Data to write {index} index: {all_data}  [FPolicy : "+policy_name+"] \n\n")
-
-                        sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
-                        event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=all_data)
-                        ew.write_event(event)
-                        helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+all_data+" [FPolicy : "+policy_name+"] \n\n")
+                        
+                        #TODO:
+                        divider = "<?xml version=\"1.0\"?>"
+                        if all_data:  # Check if all_data is empty 
+                            items = all_data.split(divider)
+                            for event in items:
+                                #  removes leading/trailing whitespace
+                                sourcetype=  policy_name  + "://" + helper.get_input_stanza_names()
+                                event = helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=item)
+                                ew.write_event(event)
+                                helper.log_info("\n\n [INFO] Event Inserted in XML format. \n source="+policy_name+", index="+index+", sourcetype="+sourcetype+" , data="+item+" [FPolicy : "+policy_name+"] \n\n")
+                        #TODO:
                     #FIXME:
 
                     client_sock, client_addr = sock.accept()
