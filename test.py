@@ -92,6 +92,10 @@ def send_and_receive_data(host, port, data):
         process.stdin.write(data.encode())
         process.stdin.flush()
         time.sleep(1)
+        process.stdin.write(data.encode())
+        process.stdin.flush()
+        time.sleep(1)
+
 
         return response
     except Exception as e:
