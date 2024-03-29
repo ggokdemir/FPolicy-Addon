@@ -36,10 +36,10 @@ fields = [
         'Server_IP',
         required=True,
         encrypted=False,
-        default='localhost',
+        default='0.0.0.0',
         validator=validator.String(
             max_len=15, 
-            min_len=9, 
+            min_len=7, 
         )
     ), 
     field.RestField(
@@ -59,7 +59,7 @@ fields = [
         default=None,
         validator=validator.AllOf(
             validator.Pattern(
-                regex=r"""^[a-zA-Z0-9_-]*$""", 
+                regex=r"""^[a-zA-Z\w-]*$""", 
             ), 
             validator.String(
                 max_len=30, 

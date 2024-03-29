@@ -95,7 +95,7 @@
                                 {
                                     "type": "regex",
                                     "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
-                                    "pattern": "^[a-zA-Z]\\w*$"
+                                    "pattern": "^[a-zA-Z\\w-]*$"
                                 },
                                 {
                                     "type": "string",
@@ -113,7 +113,7 @@
                             "label": "Index",
                             "type": "singleSelect",
                             "defaultValue": "default",
-                            "help": "An index to save File Notifications as JSON, if not as XML.",
+                            "help": "An index to save File Notifications as XML.",
                             "options": {
                                 "endpointUrl": "data/indexes",
                                 "createSearchChoice": true,
@@ -144,12 +144,12 @@
                             "label": "Add-on Server IP",
                             "field": "Server_IP",
                             "help": "IP address for the Add-on as an External Server. Please see the external engine settings of FPolicy. (Use the external IP of the Splunk instance.)",
-                            "defaultValue": "localhost",
+                            "defaultValue": "0.0.0.0",
                             "required": true,
                             "validators": [
                                 {
                                     "type": "string",
-                                    "minLength": 9,
+                                    "minLength": 7,
                                     "maxLength": 15,
                                     "errorMsg": "IP only."
                                 }
@@ -184,7 +184,7 @@
                                 {
                                     "type": "regex",
                                     "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores or hyphen.",
-                                    "pattern": "^[a-zA-Z0-9_-]*$"
+                                    "pattern": "^[a-zA-Z\\w-]*$"
                                 },
                                 {
                                     "type": "string",
@@ -277,7 +277,7 @@
     "meta": {
         "name": "fpolicy_addon_for_splunk",
         "restRoot": "fpolicy_addon_for_splunk",
-        "version": "1.0.9",
+        "version": "1.5.6",
         "displayName": "FPolicy Add-on for Splunk",
         "schemaVersion": "0.0.3"
     }
