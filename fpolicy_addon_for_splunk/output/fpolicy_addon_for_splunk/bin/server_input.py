@@ -39,7 +39,7 @@ class ClientHandler(threading.Thread):
 
         # get input values
         index=self.helper.get_arg("index")
-        sourcetype=self.helper.get_arg("account")['name']
+        sourcetype=self.helper.get_arg("sourcetype")
         host = self.helper.get_arg("Server_IP")
         port = int(self.helper.get_arg("Server_Port"))
 
@@ -143,7 +143,7 @@ class ClientHandler(threading.Thread):
             if raw_data != "": 
                 self.helper.log_info(f"\n\n [INFO] Data to write {index} index: {data}  [FPolicy : "+policy_name+"] \n\n")
 
-                sourcetype=  policy_name  + "://" + self.helper.get_input_stanza_names()
+                #sourcetype=  policy_name  + "://" + self.helper.get_input_stanza_names()
                 event = self.helper.new_event(source=policy_name, index=index, sourcetype=sourcetype , data=data)
 
                 try:
@@ -233,7 +233,7 @@ class ModInputSERVER_INPUT(base_mi.BaseModInput):
 
         # get input values
         index=helper.get_arg("index")
-        sourcetype=helper.get_arg("account")['name']
+        sourcetype=helper.get_arg("sourcetype")
         host = helper.get_arg("Server_IP")
         port = int(helper.get_arg("Server_Port"))
 
